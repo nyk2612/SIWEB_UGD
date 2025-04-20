@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 // Gunakan path relatif jika folder utils berada di root
-import { login, isAuthenticated, getCurrentUser } from '@/pages/utils/auth';
+import { isAuthenticated, getCurrentUser } from '@/pages/utils/auth';
+import { login } from "../../service/auth.service";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const LoginPage = () => {
       const user = getCurrentUser();
       console.log('User already authenticated:', user);
       if (user && user.role === 'admin') {
-        router.push('/admin/dashboard');
+        router.push('/admin');
       } else {
         router.push('/');
       }
@@ -35,15 +36,21 @@ const LoginPage = () => {
 
     try {
       // Pastikan untuk memanggil login dengan nilai yang sudah di-trim
-      const user = await login(credentials.email, credentials.password);
-      setMessage('Login berhasil! Mengalihkan...');
-      console.log('Login successful. User:', user);
-      // Redirect berdasarkan role user
-      if (user.role === 'admin') {
-        router.push('/admin/dashboard');
+      const authenticate = await login(credentials.email, credentials.password);
+      if(authenticate.success) {
+        console.log(authenticate);
+        setMessage('Login berhasil! Mengalihkan...');
+        console.log('Login successful. User:', authenticate.data);
+        // Redirect berdasarkan role user
+        if (authenticate.data.role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
       } else {
-        router.push('/');
+        setError(authenticate.message);
       }
+      
     } catch (err) {
       console.error('Error during login:', err);
       setError(err.message || 'Login gagal. Silakan coba lagi.');

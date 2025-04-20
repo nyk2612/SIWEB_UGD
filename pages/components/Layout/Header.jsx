@@ -1,13 +1,19 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { isAuthenticated } from '@/pages/service/auth.service';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    setIsLogin(isAuthenticated());
+  }, isAuthenticated);
 
   return (
     <header className="bg-green-600 shadow-md">
@@ -57,9 +63,11 @@ export default function Header() {
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                 </div>
               </Link>
-              <Link href="/login" className="bg-white text-green-600 hover:bg-green-100 font-medium py-2 px-4 rounded-md transition duration-300">
-                Login
-              </Link>
+              {!isLogin && (
+                <Link href="/login" className="bg-white text-green-600 hover:bg-green-100 font-medium py-2 px-4 rounded-md transition duration-300">
+                  Login
+                </Link>
+              )}
             </div>
           </div>
 

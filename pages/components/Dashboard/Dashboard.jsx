@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // Jika kamu menggunakan alias, pastikan alias tersebut dikonfigurasi di jsconfig.json/tsconfig.json;
 // Jika tidak, gunakan path relatif, misalnya: import { isAuthenticated, getCurrentUser, isAdmin, logout } from '../../utils/auth';
-import { isAuthenticated, getCurrentUser, isAdmin, logout } from '@/utils/auth';
+import { getCurrentUser, isAdmin, logout } from '@/pages/utils/auth';
+import { isAuthenticated } from '@/pages/service/auth.service'
+import Loading from '../Layout/Loading';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -32,9 +34,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
-      </div>
+      <Loading/>
     );
   }
 
