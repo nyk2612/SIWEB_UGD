@@ -15,4 +15,3 @@ function totalRevenue() {
     return formattedTotal;
 }
 export const totalIncome = totalRevenue();
-

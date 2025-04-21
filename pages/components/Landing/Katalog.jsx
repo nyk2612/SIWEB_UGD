@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProducts } from '@/pages/utils/api';
+import { productsData, katalogProduct } from '@/pages/service/data/products';
 
 const Katalog = () => {
   const [products, setProducts] = useState([]);
@@ -9,44 +10,21 @@ const Katalog = () => {
   const [sortBy, setSortBy] = useState('name-asc');
 
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchProducts();
-        setProducts(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-        setLoading(false);
-      }
-    };
-
-    getProducts();
-  }, []);
-
-  // For demo purposes if API is not ready
-  useEffect(() => {
-    const demoProducts = [
-      { id: 1, name: 'Beras Premium', price: 65000, category: 'sembako', stock: 25, image: '/assets/produk-a.jpg' },
-      { id: 2, name: 'Minyak Goreng', price: 20000, category: 'sembako', stock: 30, image: '/assets/produk-b.jpg' },
-      { id: 3, name: 'Kecap Manis', price: 15000, category: 'bumbu', stock: 40, image: '/assets/produk-c.jpg' },
-      { id: 4, name: 'Gula Pasir', price: 12500, category: 'sembako', stock: 20, image: '/assets/produk-a.jpg' },
-      { id: 5, name: 'Tepung Terigu', price: 10000, category: 'bahan-kue', stock: 15, image: '/assets/produk-b.jpg' },
-      { id: 6, name: 'Susu Kaleng', price: 15000, category: 'minuman', stock: 25, image: '/assets/produk-c.jpg' },
-    ];
-    setProducts(demoProducts);
+    setProducts(productsData);
     setLoading(false);
   }, []);
 
-  const categories = ['all', 'sembako', 'bumbu', 'bahan-kue', 'minuman'];
+  const katalog = katalogProduct.map(katalog => katalog.nama);
+  const categories = ['all', ...katalog];
 
   const filteredProducts = products
     .filter(product => 
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) && 
-      (categoryFilter === 'all' || product.category === categoryFilter)
+      product.product.toLowerCase().includes(searchTerm.toLowerCase()) && 
+      (categoryFilter === 'all' || product.katalog === categoryFilter)
     )
     .sort((a, b) => {
-      if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
-      if (sortBy === 'name-desc') return b.name.localeCompare(a.name);
+      if (sortBy === 'name-asc') return a.product.localeCompare(b.product);
+      if (sortBy === 'name-desc') return b.product.localeCompare(a.product);
       if (sortBy === 'price-asc') return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
       return 0;
@@ -117,13 +95,13 @@ const Katalog = () => {
                 <div className="h-48 overflow-hidden">
                   <img 
                     src={product.image} 
-                    alt={product.name} 
+                    alt={product.product} 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-4">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">{product.product}</h3>
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                       {product.category}
                     </span>
