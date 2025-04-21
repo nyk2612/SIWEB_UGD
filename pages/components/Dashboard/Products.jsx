@@ -67,7 +67,7 @@ export default function Products() {
                                             Rp. {product.price}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="#"class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                            <Link href={`/admin/products/edit/${product.id}`} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                             <button class="ml-4 font-medium text-red-600 dark:text-red-500 hover:underline"
                                                 onClick={() => handleToDelete(product.id)}
                                             >Hapus</button>

@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/admin/products": "pages/admin/products.js",
-  "/admin/products/create": "pages/admin/products/create.js"
+  "/admin/products/create": "pages/admin/products/create.js",
+  "/admin/products/edit/[id]": "pages/admin/products/edit/[id].js",
+  "/admin/products": "pages/admin/products.js"
 }

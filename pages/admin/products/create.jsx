@@ -86,11 +86,6 @@ export default function CreateProduct() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="bg-white shadow-md rounded-lg p-6">
               <h2 className="text-2xl font-bold">Tambah Data Produk</h2>
-              {uploadError && (
-                <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
-                  <span className="font-medium">Error!</span> {uploadError}
-                </div>
-              )}
               <form className="flex flex-col gap-4 mt-4" onSubmit={handleAddProduct}>
                 <div>
                   <div className="mb-2 block">

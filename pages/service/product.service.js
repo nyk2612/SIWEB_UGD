@@ -13,3 +13,17 @@ export function deleteProduct(id) {
     }
     return true
 }
+
+export function getProductById(id){
+    const product = productsData.find((product) => product.id === id);
+    return product
+}
+
+export function updateProduct(id, data) {
+    const productIndex = productsData.findIndex((product) => product.id === id);
+    if (productIndex !== -1) {
+        productsData[productIndex] = { ...productsData[productIndex], ...data };
+        return true;
+    }
+    return false;
+}
