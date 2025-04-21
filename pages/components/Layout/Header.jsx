@@ -13,7 +13,7 @@ export default function Header() {
 
   useEffect(() => {
     setIsLogin(isAuthenticated());
-  }, isAuthenticated);
+  }, []);
 
   return (
     <header className="bg-green-600 shadow-md">

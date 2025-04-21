@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { getCurrentUser, isAdmin, logout } from '@/pages/utils/auth';
 import { isAuthenticated } from '@/pages/service/auth.service'
 import Loading from '../Layout/Loading';
+import Link from 'next/link';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -83,9 +84,9 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <a href="/admin/menu" className="text-sm font-medium text-blue-600 hover:text-blue-500">
+                <Link href="/admin/products" className="text-sm font-medium text-blue-600 hover:text-blue-500">
                   Kelola Produk &rarr;
-                </a>
+                </Link>
               </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
