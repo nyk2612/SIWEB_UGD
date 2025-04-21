@@ -1,8 +1,23 @@
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Link from "next/link";
 import { productsData } from "@/pages/service/data/products";
+import { useEffect, useState } from "react";
+import { deleteProduct } from "@/pages/service/product.service";
 
 export default function Products() {
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+        setProducts(productsData);
+    }, productsData);
+
+    const handleToDelete = (id) => {
+        const deleted = deleteProduct(id);
+        if (deleted) {
+            setProducts(products.filter((product) => product.id !== id));
+        }
+    }
+
     return (
         <div className="bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -35,7 +50,7 @@ export default function Products() {
                                 </tr>
                             </thead>
                             <tbody>
-                                { productsData.map((product) => (
+                                { products.map((product) => (
                                     <tr
                                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                                         <th scope="row"
@@ -53,7 +68,9 @@ export default function Products() {
                                         </td>
                                         <td class="px-6 py-4">
                                             <a href="#"class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                            <a href="#"class="ml-4 font-medium text-red-600 dark:text-red-500 hover:underline">Hapus</a>
+                                            <button class="ml-4 font-medium text-red-600 dark:text-red-500 hover:underline"
+                                                onClick={() => handleToDelete(product.id)}
+                                            >Hapus</button>
                                         </td>
                                     </tr>
                                 ))}

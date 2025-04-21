@@ -5,3 +5,11 @@ export function addProduct(data) {
         return true
     }
 }
+
+export function deleteProduct(id) {
+    const product = productsData.findIndex((product) => product.id === id);
+    if (product !== -1) {
+        productsData.splice(product, 1);
+    }
+    return true
+}
