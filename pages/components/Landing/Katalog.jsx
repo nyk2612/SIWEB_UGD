@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProducts } from '@/pages/utils/api';
 import { productsData, katalogProduct } from '@/pages/service/data/products';
+import Link from 'next/link';
 
 const Katalog = () => {
   const [products, setProducts] = useState([]);
@@ -108,11 +109,12 @@ const Katalog = () => {
                   </div>
                   <p className="text-xl font-bold text-green-600 mt-2">Rp {product.price.toLocaleString()}</p>
                   <p className="text-sm text-gray-600 mt-1">Stok: {product.stock}</p>
-                  <button 
-                    className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors duration-300"
+                  <Link 
+                    href={`/beli/${product.id}`}
+                    className="inline-block text-center mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors duration-300"
                   >
-                    Tambah ke Keranjang
-                  </button>
+                    Beli
+                  </Link>
                 </div>
               </div>
             ))}
