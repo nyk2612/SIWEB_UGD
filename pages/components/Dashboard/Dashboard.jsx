@@ -6,11 +6,15 @@ import { getCurrentUser, isAdmin, logout } from '@/pages/utils/auth';
 import { isAuthenticated } from '@/pages/service/auth.service'
 import Loading from '../Layout/Loading';
 import Link from 'next/link';
+import { countProduct } from '@/pages/service/product.service';
+import { transactionsData } from '@/pages/service/data/transactions';
+import { totalIncome } from '@/pages/service/transaction.service';
 
 const Dashboard = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const latestTransaction = transactionsData.slice(0, 5);
 
   useEffect(() => {
     // Cek autentikasi dan status admin
@@ -80,7 +84,7 @@ const Dashboard = () => {
                 </div>
                 <div className="ml-5">
                   <h3 className="text-lg font-medium text-gray-900">Produk</h3>
-                  <div className="mt-1 text-3xl font-semibold text-gray-900">24</div>
+                  <div className="mt-1 text-3xl font-semibold text-gray-900">{countProduct}</div>
                 </div>
               </div>
               <div className="mt-4">
@@ -98,13 +102,13 @@ const Dashboard = () => {
                 </div>
                 <div className="ml-5">
                   <h3 className="text-lg font-medium text-gray-900">Transaksi</h3>
-                  <div className="mt-1 text-3xl font-semibold text-gray-900">12</div>
+                  <div className="mt-1 text-3xl font-semibold text-gray-900">{transactionsData.length}</div>
                 </div>
               </div>
               <div className="mt-4">
-                <a href="/admin/histori" className="text-sm font-medium text-blue-600 hover:text-blue-500">
+                <Link href="/admin/histori" className="text-sm font-medium text-blue-600 hover:text-blue-500">
                   Lihat Histori &rarr;
-                </a>
+                </Link>
               </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
@@ -116,7 +120,7 @@ const Dashboard = () => {
                 </div>
                 <div className="ml-5">
                   <h3 className="text-lg font-medium text-gray-900">Pendapatan</h3>
-                  <div className="mt-1 text-3xl font-semibold text-gray-900">Rp 2.450.000</div>
+                  <div className="mt-1 text-3xl font-semibold text-gray-900">{totalIncome}</div>
                 </div>
               </div>
               <div className="mt-4">
@@ -152,39 +156,19 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#TRX-001</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">01/04/2023</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Pembeli Setia</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 350.000</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Selesai
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#TRX-002</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">02/04/2023</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Bapak Budi</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 125.000</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Selesai
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#TRX-003</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/04/2023</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Ibu Citra</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 75.000</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                        Proses
-                      </span>
-                    </td>
-                  </tr>
+                  {latestTransaction.map((transaction) => (
+                    <tr key={transaction.id}> {/* Menambahkan key unik untuk setiap transaksi */}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.customer}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.amount}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${transaction.status === 'Selesai' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          {transaction.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

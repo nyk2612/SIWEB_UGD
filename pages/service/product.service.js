@@ -27,3 +27,5 @@ export function updateProduct(id, data) {
     }
     return false;
 }
+
+export const countProduct = productsData.length;
