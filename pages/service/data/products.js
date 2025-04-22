@@ -74,7 +74,7 @@ export const productsData = [
     {
         "id": "6d1cb0ab-7035-4b12-a382-5956d0f71790",
         "product": "Sabun Mandi Lifebuoy",
-        "katalog": "Peralaatan Mandi",
+        "katalog": "Peralatan Mandi",
         "image": "images/beras.jpg",
         "stock": 180,
         "price": 10000
@@ -82,7 +82,7 @@ export const productsData = [
     {
         "id": "2d8c3496-8a7c-409a-9ccf-0e4ab8b2432a",
         "product": "Shampo Pantene 400ml",
-        "katalog": "Peralaatan Mandi",
+        "katalog": "Peralatan Mandi",
         "image": "images/beras.jpg",
         "stock": 150,
         "price": 22000
@@ -90,7 +90,7 @@ export const productsData = [
     {
         "id": "0f594f25-fc73-4b80-898b-9135a171870f",
         "product": "Odol Pepsodent 100g",
-        "katalog": "Peralaatan Mandi",
+        "katalog": "Peralatan Mandi",
         "image": "images/beras.jpg",
         "stock": 200,
         "price": 8000
@@ -107,6 +107,7 @@ export const productsData = [
         "id": "bc9a74e2-6e19-4b98-9375-b042eb5f0f7c",
         "product": "Terasi ABC 100g",
         "katalog": "Bumbu Dapur",
+        "image": "images/beras.jpg",
         "stock": 200,
         "price": 6000
     },

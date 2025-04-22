@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/admin": "pages/admin.js",
-  "/katalog": "pages/katalog.js",
-  "/beli/[id]": "pages/beli/[id].js"
+  "/": "pages/index.js",
+  "/katalog": "pages/katalog.js"
 }
