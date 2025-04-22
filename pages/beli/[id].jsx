@@ -3,6 +3,8 @@ import { productsData } from '@/pages/service/data/products';
 import Layout from '../components/Layout/Layout';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { createTransaction } from '../service/transaction.service';
+import { isAuthenticated } from '@/pages/service/auth.service'
 
 export default function Page() {
     const router = useRouter();
@@ -12,6 +14,11 @@ export default function Page() {
     const [user, setUser] = useState("");
 
     useEffect(() => {
+        if (!isAuthenticated()) {
+            router.push('/katalog');
+            return;
+        }
+
         const data = productsData.find((product) => product.id === router.query.id)
         setProduct(data);
         setTotal(data.price * quantity)
@@ -47,8 +54,14 @@ export default function Page() {
             status: "Selesai",
         };
         // buatkan fungsi untuk menyimpan data transaksi
-        
-        router.push('/checkout');
+        const transaction = createTransaction(data);
+        console.log(data)
+        if (transaction) {
+            alert('Transaksi berhasil');
+            router.push('/katalog');
+        } else {
+            alert('Transaksi gagal');
+        }
     }
 
     return (
@@ -67,11 +80,11 @@ export default function Page() {
                                 <p className="italic">{product.katalog}</p>
                                 <p>{product.price?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
                                 <div className="mt-4">
-                                <form class="max-w-sm" >
+                                <form class="max-w-sm" onSubmit={handleSubmit}>
                                     <label for="qty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah :</label>
                                     <div className="flex gap-2 items-center">
                                         <button onClick={subQty} type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:focus:ring-yellow-900">-</button>
-                                        <input type="number" id="qty" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={quantity} required />
+                                        <input type="number" id="qty" readOnly aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={quantity} required />
                                         <button onClick={addQty} type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:focus:ring-yellow-900">+</button>
                                     </div>
                                     <div className="mt-4">

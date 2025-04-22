@@ -1,7 +1,12 @@
-import { transactionsData } from '@/pages/service/data/transactions';
 import Link from 'next/link';
+import { getAllTransactions } from '@/pages/service/transaction.service';
+import { useEffect, useState } from 'react';
 export default function HistoriTransaksi() {
-  
+  const [transactions, setTransactions] = useState([]);
+  transactions.sort((a, b) => new Date(b.date.split('/').reverse().join('-')) - new Date(a.date.split('/').reverse().join('-'))) 
+  useEffect(() => {
+    setTransactions(getAllTransactions);
+  })
     return (
       <div className="">
         <Link href="/admin" className="italic text-blue-500">&#x21d0; Kembali</Link>
@@ -28,7 +33,7 @@ export default function HistoriTransaksi() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {transactionsData.map((transaction) => (
+              {transactions.map((transaction) => (
               <tr key={transaction.id}> {/* Menambahkan key unik untuk setiap transaksi */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{transaction.id}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.date}</td>

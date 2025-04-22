@@ -7,14 +7,18 @@ import { isAuthenticated } from '@/pages/service/auth.service'
 import Loading from '../Layout/Loading';
 import Link from 'next/link';
 import { countProduct } from '@/pages/service/product.service';
-import { transactionsData } from '@/pages/service/data/transactions';
+import { getAllTransactions } from '@/pages/service/transaction.service';
 import { totalIncome } from '@/pages/service/transaction.service';
 
 const Dashboard = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const latestTransaction = transactionsData.slice(0, 5);
+  const [transaction, setTransaction] = useState([]);
+  const latestTransaction = transaction
+    .sort((a, b) => new Date(b.date.split('/').reverse().join('-')) - new Date(a.date.split('/').reverse().join('-')))
+    .slice(0, 5);
+  
 
   useEffect(() => {
     // Cek autentikasi dan status admin
@@ -33,6 +37,7 @@ const Dashboard = () => {
       setUser(currentUser);
       setLoading(false);
     };
+    setTransaction(getAllTransactions)
 
     checkAuth();
   }, [router]);
@@ -49,12 +54,6 @@ const Dashboard = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Dashboard Admin</h1>
-            <button 
-              onClick={logout}
-              className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors duration-300"
-            >
-              Logout
-            </button>
           </div>
           <div className="mb-8">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
@@ -102,7 +101,7 @@ const Dashboard = () => {
                 </div>
                 <div className="ml-5">
                   <h3 className="text-lg font-medium text-gray-900">Transaksi</h3>
-                  <div className="mt-1 text-3xl font-semibold text-gray-900">{transactionsData.length}</div>
+                  <div className="mt-1 text-3xl font-semibold text-gray-900">{transaction.length}</div>
                 </div>
               </div>
               <div className="mt-4">

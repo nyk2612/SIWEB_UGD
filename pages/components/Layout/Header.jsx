@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { isAuthenticated } from '@/pages/service/auth.service';
+import { logout } from '@/pages/utils/auth';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,6 +61,17 @@ export default function Header() {
                 <Link href="/login" className="bg-white text-green-600 hover:bg-green-100 font-medium py-2 px-4 rounded-md transition duration-300">
                   Login
                 </Link>
+              )}
+              {isLogin && (
+                // <Link href="/admin" className="bg-white text-green-600 hover:bg-green-100 font-medium py-2 px-4 rounded-md transition duration-300">
+                //   Logout
+                // </Link>
+                <button 
+                    onClick={logout}
+                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors duration-300"
+                  >
+                    Logout
+                  </button>
               )}
             </div>
           </div>
