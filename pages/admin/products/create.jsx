@@ -10,62 +10,46 @@ export default function CreateProduct() {
   const router = useRouter();
   const katalog = katalogProduct;
   const [product, setProduct] = useState({});
-  const [photo, setPhoto] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState(null);
   const [uploadError, setUploadError] = useState('');
 
-  // Untuk preview gambar (opsional)
-  const handleFileChange = (e) => {
-    setUploadError(''); // Reset error saat file baru dipilih
-    const file = e.target.files[0];
-    
-    if (file) {
-      console.log("File selected:", {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        lastModified: file.lastModified
-      });
-      
-      setPhoto(file);
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPhoto(null);
-      setPhotoPreview(null);
-    }
-  };
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setUploadError('');
-    
+    setUploadError("");
+  
     try {
-        const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0;
-            var v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-        const data = {
-            id: uuid,
-            product: e.target.product.value,
-            katalog: e.target.katalog.value,
-            stock: e.target.stock.value,
-            price: e.target.price.value,
-        };
-        const result = await addProduct(data);
-      
-        if (result) {
-            router.push('/admin/products');
-        } else {
-            throw new Error('Gagal menyimpan produk');
-        }
+      // Generate UUID untuk ID produk
+      const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
+  
+      // Buat FormData untuk mengirim data produk dan file
+      const formData = new FormData();
+      formData.append("id", uuid);
+      formData.append("product", e.target.product.value);
+      formData.append("katalog", e.target.katalog.value);
+      formData.append("stock", e.target.stock.value);
+      formData.append("price", e.target.price.value);
+      formData.append("image", e.target.image.files[0]);
+  
+      const response = await fetch("/api/addProduct", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error("Gagal menyimpan produk");
+      }
+  
+      const result = await response.json();
+      if (result) {
+        addProduct(result.product);
+        router.push("/admin/products");
+      }
     } catch (error) {
       console.error("Error:", error);
       setUploadError(error.message);
@@ -116,6 +100,12 @@ export default function CreateProduct() {
                     <Label htmlFor="stock">Jumlah Stok</Label>
                   </div>
                   <TextInput id="stock" type="number" required name="stock" />
+                </div>
+                <div>
+                  <Label className="mb-2 block" htmlFor="image">
+                    Upload file
+                  </Label>
+                  <FileInput id="image" />
                 </div>
                 <Button type="submit" disabled={isLoading}>
                   {isLoading ? 'Loading...' : 'Simpan'}
