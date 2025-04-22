@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { productsData } from '@/pages/service/data/products';
 
 export default function Beranda() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -41,42 +42,7 @@ export default function Beranda() {
   ];
 
   // Data produk unggulan dengan gambar dari assets lokal
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Beras Premium",
-      price: 68000,
-      originalPrice: 72000,
-      unit: "5 kg",
-      imageSrc: "/images/beras.jpg",
-      discount: true
-    },
-    {
-      id: 2,
-      name: "Minyak Goreng",
-      price: 22000,
-      unit: "1 liter",
-      imageSrc: "/images/minyakjpg",
-      discount: false
-    },
-    {
-      id: 3,
-      name: "Gula Pasir",
-      price: 15000,
-      unit: "1 kg",
-      imageSrc: "/images/gula.jpg",
-      discount: false
-    },
-    {
-      id: 4,
-      name: "Teh Celup",
-      price: 8500,
-      originalPrice: 9500,
-      unit: "isi 25",
-      imageSrc: "/images/teh-celup.jpg",
-      discount: true
-    }
-  ];
+  const featuredProducts = productsData.slice(0, 4);
 
   // Auto slider
   useEffect(() => {
@@ -205,8 +171,8 @@ export default function Beranda() {
               <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
                 <div className="relative h-48">
                   <Image
-                    src={product.imageSrc}
-                    alt={product.name}
+                    src={`/${product.image}`}
+                    alt={product.product}
                     fill
                     className="object-cover"
                   />
@@ -217,8 +183,8 @@ export default function Beranda() {
                   )}
                 </div>
                 <div className="p-4">
-                  <h3 className="font-medium text-lg text-gray-800 mb-1">{product.name}</h3>
-                  <p className="text-gray-500 text-sm mb-2">{product.unit}</p>
+                  <h3 className="font-medium text-lg text-gray-800 mb-1">{product.product}</h3>
+                  <p className="text-gray-500 text-sm mb-2">{product.katalog}</p>
                   <div className="flex items-center">
                     <span className="font-semibold text-lg text-gray-900">Rp {formatPrice(product.price)}</span>
                     {product.discount && (
@@ -227,9 +193,10 @@ export default function Beranda() {
                       </span>
                     )}
                   </div>
-                  <button className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300">
-                    Tambah ke Keranjang
-                  </button>
+                  <Link
+                    href={`/beli/${product.id}`} className="inline-block mt-2 text-center w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300">
+                    Beli
+                  </Link>
                 </div>
               </div>
             ))}
