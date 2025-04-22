@@ -2,8 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/admin/products/create": "pages/admin/products/create.js",
   "/admin/products": "pages/admin/products.js",
+  "/katalog": "pages/katalog.js",
+  "/admin/products/create": "pages/admin/products/create.js",
   "/api/addProduct": "pages/api/addProduct.js",
-  "/katalog": "pages/katalog.js"
+  "/": "pages/index.js",
+  "/tim-kami": "pages/tim-kami.js"
 }
