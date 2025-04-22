@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts } from '@/pages/utils/api';
 import { productsData, katalogProduct } from '@/pages/service/data/products';
 import Link from 'next/link';
-import { deleteProduct, getAllProducts } from "@/pages/service/product.service";
 
 const Katalog = (props) => {
   const [products, setProducts] = useState([]);
