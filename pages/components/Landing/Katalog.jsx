@@ -3,7 +3,7 @@ import { fetchProducts } from '@/pages/utils/api';
 import { productsData, katalogProduct } from '@/pages/service/data/products';
 import Link from 'next/link';
 
-const Katalog = () => {
+const Katalog = (props) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +13,13 @@ const Katalog = () => {
   useEffect(() => {
     setProducts(productsData);
     setLoading(false);
+    if (props.category) {
+      const formattedCategory = props.category
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      setCategoryFilter(formattedCategory);
+    }
   }, []);
 
   const katalog = katalogProduct.map(katalog => katalog.nama);
@@ -64,8 +71,8 @@ const Katalog = () => {
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
-                  {category === 'all' ? 'Semua Kategori' : category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
-                </option>
+                {category === 'all' ? 'Semua Kategori' : category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
+              </option>
               ))}
             </select>
           </div>
